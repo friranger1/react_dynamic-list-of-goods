@@ -3,22 +3,39 @@ import { Good } from '../types/Good';
 // eslint-disable-next-line
 const API_URL = `https://mate-academy.github.io/react_dynamic-list-of-goods/goods.json`;
 
-export function getAll(): Promise<Good[]> {
-  // return fetch(API_URL).then(response => response.json());
-  const result = fetch(API_URL).then(res => res.json()).then(data => data);
+export async function getAll(): Promise<Good[]> {
+  try {
+    const response = await fetch(API_URL);
 
-  return result;
+    if (!response.ok) {
+      throw new Error(`Ошибка сети: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (err) {
+    // eslint-disable-next-line
+    console.error('Ошибка при загрузке товаров:', err);
+
+    throw err;
+  }
 }
 
 export const get5First = async () => {
-  // return getAll().then(goods => goods);
-  const goods = await getAll();
+  try {
+    const goods = await getAll();
 
-  return goods.sort((a, b) => a.name.localeCompare(b.name)).slice(0, 5);// sort and get the first 5
+    return [...goods].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 5);
+  } catch (err) {
+    return [];
+  }
 };
 
 export const getRedGoods = async () => {
-  return await getAll().then(goods => goods.filter((good) => good.color === 'red')); // get only red
+  try {
+    const goods = await getAll();
 
-
+    return goods.filter(good => good.color === 'red');
+  } catch (err) {
+    return [];
+  }
 };
