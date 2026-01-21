@@ -7,7 +7,7 @@ import { Good } from './types/Good';
 // or
 // import * as goodsAPI from './api/goods';
 
-export const App: React.FC = () => {
+export const App: React.FC = React.memo(() => {
   const [goods, setGoods] = useState<Good[]>([]);
 
   return (
@@ -35,9 +35,14 @@ export const App: React.FC = () => {
         type="button"
         data-cy="first-five-button"
         onClick={async () => {
-          const data = await get5First();
+          try {
+            const data = await get5First();
 
-          setGoods(data);
+            setGoods(data);
+          } catch (error) {
+            // eslint-disable-next-line
+            console.log(error);
+          }
         }}
       >
         Load 5 first goods
@@ -47,9 +52,14 @@ export const App: React.FC = () => {
         type="button"
         data-cy="red-button"
         onClick={async () => {
-          const data = await getRedGoods();
+          try {
+            const data = await getRedGoods();
 
-          setGoods(data);
+            setGoods(data);
+          } catch (error) {
+            // eslint-disable-next-line
+            console.log(error);
+          }
         }}
       >
         Load red goods
@@ -58,4 +68,6 @@ export const App: React.FC = () => {
       <GoodsList goods={goods} />
     </div>
   );
-};
+});
+
+App.displayName = 'App';

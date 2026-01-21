@@ -26,6 +26,9 @@ export const get5First = async () => {
 
     return [...goods].sort((a, b) => a.name.localeCompare(b.name)).slice(0, 5);
   } catch (err) {
+    // eslint-disable-next-line
+    console.log(err);
+
     return [];
   }
 };
@@ -36,6 +39,9 @@ export const getRedGoods = async () => {
 
     return goods.filter(good => good.color === 'red');
   } catch (err) {
+    // eslint-disable-next-line
+    console.log(err);
+
     return [];
   }
 };
